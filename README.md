@@ -103,7 +103,7 @@ once done, save this and you should be get a job ID in this format  --> 8cbc3e6c
 
 This job id should be overriden in requestweather function in remix and trigger
 
-### 5) Execute weather_adapter and keep listening for events 
+### 4) Execute weather_adapter and keep listening for events 
 
 External adapters are provided in the [weather_adapter](./weather_adapter) folder. They are simple servers built using Express that receives a post API call from the Plugin node and sends the information to the smart contract on Xinfin Network.
 
@@ -121,3 +121,4 @@ Don't forget to install packages with `npm install` and then start the servers w
 
 
 Once the above steps are successful, you will be able to see the job is triggered in Plugin UI and task is succesfully writing weather on blockchain.
+### 5) Trigger requestweather function from remix to register the request
