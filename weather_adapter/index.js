@@ -7,15 +7,26 @@ const customError = (data) => {
 }
 
 const customParams = {
-  endpoint:['endpoint']
+  country:['country'],
+  state:['state'],
+  city:['city']
 }
-
 const createRequest = (input, callback) => {
   
-  const url = `http://<host>/api/${input.data.endpoint}`
-
+  const url = `http://3.141.162.75:5000/api/${input.data.endpoint}/${input.data.country}/${input.data.state}/${input.data.city}`
+  const city = input.data.city;
+  const country = input.data.country;
+  const state = input.data.state;
+ console.log(input.data.endpoint)
+	/*
+  const params ={
+    city,
+    state,
+    country
+  }
+*/
   const config = {
-    url
+	  url
   }
 
   if (process.env.API_KEY) {
@@ -23,9 +34,12 @@ const createRequest = (input, callback) => {
       Authorization: process.env.API_KEY
     }
   }
+//config.params = {country: input.data.country, state:input.data.state, city:input.data.city}
+  console.log("config value is",config);
   Requester.request(config, customError)
     .then(response => {
-      console.log("response is sisis",response)
+      console.log("response is sisis",response.data)
+      console.log("inputdata is",input.data);
       if(input.data.envCheck=="WindDirection"){
         var resultData = response.data[0]['windDirection'];
       }else if(input.data.envCheck=="Temperature"){
@@ -33,6 +47,13 @@ const createRequest = (input, callback) => {
       }else if(input.data.envCheck=="WindChill"){
         var resultData = response.data[0]['windChillC'];
       }
+      else if(input.data.envCheck=="HeatIndex"){
+        var resultData = response.data[0]['heatIndexF'];
+      }
+      else if(input.data.envCheck=="RelativeHumidity"){
+        var resultData = response.data[0]['RH'];
+      }
+console.log('Err_string',resultData);
       response.data.result =resultData.toString();
 
       console.log("resultData is",resultData);
