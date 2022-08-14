@@ -12,32 +12,25 @@ const customParams = {
 
 const createRequest = (input, callback) => {
 
-  const url = `http://<host>/api/${input.data.endpoint}`
+const url = `https://goplugin.apidiscovery.teejlab.com/edsn/api/benchmark/endpoint_request_live?endpoint_id=YJmrh3b`
 
+var dataString = {"fsyms": `${input.data.fsyms}`, "tsyms": `${input.data.tsyms}`};
   const config = {
-    url
+    url,
+    method : "POST",
+    data : dataString,
   }
 
   if (process.env.API_KEY) {
     config.headers = {
-      Authorization: process.env.API_KEY
+      "api-key": process.env.API_KEY
     }
   }
   Requester.request(config, customError)
     .then(response => {
-
-      if (input.data.envCheck == "WindDirection") {
-        var resultData = response.data[0]['windDirection'];
-      } else if (input.data.envCheck == "Temperature") {
-        var resultData = response.data[0]['tempC'];
-      } else if (input.data.envCheck == "WindChill") {
-        var resultData = response.data[0]['windChillC'];
-      }
-      response.data.result = resultData.toString();
-      
       const res = {
         data: {
-          "result": response.data.result.toString()
+          "result": response.data[`${input.data.fsyms}`][`${input.data.tsyms}`].toString()
         }
       }
       callback(response.status, Requester.success(input.id, res));
